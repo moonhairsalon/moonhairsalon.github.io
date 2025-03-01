@@ -5,6 +5,9 @@ switch ($request_uri) {
     case 'peace':
         include_once("peace.html");
         break;
+    case 'buffalo':
+        include_once("buffalo.html");
+        break;
     case 'sea':
         include_once("sea.html");
         break;
