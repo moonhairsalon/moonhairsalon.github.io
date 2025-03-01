@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thái Bình</title>
+    <link rel="shortcut icon" href="/EBA51425-E7C4-4346-8ED5-251346EC21AC.jpeg">
+    <link rel="apple-touch-icon" size="180x180" href="/EBA51425-E7C4-4346-8ED5-251346EC21AC.jpeg">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .clickable {
+            cursor: pointer;
+        }
+
+        /* Giảm kích thước bảng cho di động */
+        .table {
+            font-size: 12px;
+            /* Chữ nhỏ hơn */
+        }
+
+        .table-sm th,
+        .table-sm td {
+            font-size: 14px;
+            padding: 8px;
+            white-space: nowrap;
+            /* Không xuống dòng tự động */
+        }
+
+        .table th,
+        .table td {
+            padding: 6px;
+            border: 1px solid black;
+            /* Giảm khoảng cách giữa nội dung */
+        }
+
+        h4 {
+            font-size: 16px;
+            /* Tiêu đề nhỏ hơn */
+        }
+
+        .sub-table {
+            background: #f9f9f9;
+            /* Màu nền nhẹ cho bảng con */
+            margin-top: 5px;
+        }
+
+        td[rowspan] {
+            vertical-align: middle !important;
+            text-align: center;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            /* Đảm bảo tiêu đề không bị trong suốt */
+            z-index: 10;
+            /* Giữ header trên cùng */
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="loadingtext" style="text-align: center;">Đang tải bảng lương, chờ xíu!!!</h1>
+
+    <div class="container-fluid mt-3" id="containerLuong" style="display: none;">
+        <h3 class="text-center">Bảng lương Thái Bình</h3>
+        <div class="table-responsive" style="max-height: 90vh; overflow-y: auto;">
+            <table class="table table-bordered table-sm">
+                <thead class="thead-light">
+                    <tr id="viewHeader">
+                        <th style="text-align: center;">
+                            Ngày</th>
+                        <th style="text-align: center;">Tên khách</th>
+                        <th style="text-align: center;">Tiền bill</th>
+                        <th style="background-color: #e9ecef; font-weight: 700; text-align: center;">Tổng bill ngày</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <tr>
+                        <td>05/02/2025</td>
+                        <td>Linh</td>
+                        <td>2,000,000</td>
+                        <td>5,000,000</td>
+                        <td></td>
+                        <td>200,000</td>
+                        <td></td>
+                        <td>40,000</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                <tbody id="tongLuong">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: center;">Lương</td>
+                        <td></td>
+                        <td style="font-size: 16pt; font-weight: 700;"></td>
+                        <td style="font-size: 16pt; font-weight: 700;">200,000</td>
+                        <td style="font-size: 16pt; font-weight: 700;"></td>
+                        <td style="font-size: 16pt; font-weight: 700;">40,000</td>
+                        <td style="font-size: 16pt; font-weight: 700;"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $(".clickable").click(function () {
+                $(this).next(".collapse").collapse('toggle');
+            });
+        });
+    </script>
+
+    <script>
+        const lightColors = [
+            "#C8E6C9", // Xanh mint
+            "#B3E5FC", // Xanh baby (nhạt)
+            "#FFF9C4", // Vàng pastel
+            "#FFE0B2", // Cam nhạt
+            "#FFCDD2", // Hồng pastel
+            "#E1BEE7", // Tím lavender
+            "#F5F5F5", // Xám nhạt
+            "#A7FFEB", // Xanh bạc hà
+            "#D1C4E9", // Tím nhạt
+            "#FFECB3", // Vàng kem
+            "#C5CAE9", // Xanh tím nhạt
+            "#DCEDC8", // Xanh lá pastel
+            "#F8BBD0", // Hồng phấn nhạt
+            "#FFDDE1", // Hồng đào
+            "#E0F7FA"  // Xanh biển pastel
+        ];
+
+        console.log(lightColors);
+
+        // Hàm đọc file JSON
+        async function fetchData() {
+            fetch("https://script.google.com/macros/s/AKfycbwbnpYPAZv0PePVxVyUC2CJy8qnZazkRyc6fIkOM4081JUxWTd3K5tQyOiEHWdfMlzoUA/exec")
+                .then(response => response.json()) // Chuyển dữ liệu về JSON
+                .then(data => {
+            try {
+                // let response = await fetch('data.json'); // Đọc file
+                // let data = await response.json(); // Chuyển thành JSON
+                console.log(data);
+
+                document.getElementById('containerLuong').style.display = 'unset'
+
+                let listTho = new Array();
+                for (let index = 4; index < data[1].length; index++) {
+                    listTho.push(data[1][index]);
+                    document.getElementById('viewHeader').innerHTML += '<td style="background-color: ' + lightColors[index - 4] + '; font-weight: 700; text-align: center;position: sticky;top: 0;z-index: 10;">' + data[1][index] + '</td>'
+                }
+
+                let dataByNgay = new Array();
+                let countIndexNgay = 0;
+
+                for (let index = 2; index < data.length - 1; index++) {
+                    if (data[index][0] != "") {
+                        let dataNgay = {};
+                        dataNgay.ngay = data[index][0];
+                        dataNgay.tongBill = data[index][3];
+                    }
+                }
+
+                let dataView = document.getElementById('table-body')
+                dataView.innerHTML = '';
+
+                let currentDate = '';
+                let currentTongBill = '';
+                let boiMau = false;
+                for (let index = 2; index < data.length - 1; index++) {
+                    let viewDong = '';
+
+                    if (currentDate) {
+                        if (data[index][0] && data[index][0] != currentDate) {
+                            currentDate = data[index][0]
+                            currentTongBill = data[index][3]
+                            let boiMau = true;
+                        }
+                    } else {
+                        currentDate = data[index][0]
+                        currentTongBill = data[index][3]
+                    }
+                    data[index][0] = formatDate(currentDate);
+                    data[index][3] = currentTongBill
+                    for (let elm = 0; elm < data[index].length; elm++) {
+                        if (elm == 0) {
+                            viewDong += '<td style="text-align: center; class="'+boiMau+'">' + data[index][elm] + '</td>';
+                        } else {
+                            let background = '';
+                            if (elm >= 4 && data[index][elm]) {
+                                background = 'background-color: ' + lightColors[elm - 4] + ';';
+                            }
+                            viewDong += '<td style="text-align: center;' + background + '">' + formatNumber(data[index][elm]) + '</td>';
+
+                        }
+                    }
+                    dataView.innerHTML += '<tr>' + viewDong + '</tr>';
+                }
+                mergeTableCells(); // Gọi hàm sau khi tải trang
+
+                let tongLuongView = document.getElementById('tongLuong')
+                tongLuongView.innerHTML = '';
+                let lastRe = data.length;
+                let tongLuongHtml = ''
+                tongLuongHtml += '                    <tr>\n' +
+                    '                        <td></td>\n' +
+                    '                        <td></td>\n' +
+                    '                        <td style="font-size: 12pt; font-weight: 700;">Lương</td>\n' +
+                    '                        <td></td>';
+                for (let index = 4; index < data[lastRe - 1].length; index++) {
+                    tongLuongHtml += '<td style="font-size: 11pt; font-weight: 700; text-align: center; background-color: ' + lightColors[index - 4] + ';">' + formatNumber(data[lastRe - 1][index]) + '</td>\n'
+                }
+                tongLuongHtml += '</tr>';
+                tongLuongView.innerHTML = tongLuongHtml;
+
+
+            } catch (error) {
+                console.error("Lỗi tải dữ liệu:", error);
+                document.getElementById('loadingtext').innerText = 'Chưa có bảng lương đâu!'
+            }
+
+            document.getElementById('loadingtext').style.display = 'none'
+            })
+            .catch(error => {console.error("Lỗi:", error)
+            document.getElementById('loadingtext').innerText = 'Chưa có bảng lương đâu!'
+
+        });
+        }
+
+        fetchData(); // Gọi hàm
+
+    </script>
+
+    <script>
+function mergeTableCells() {
+    let table = document.getElementById("table-body");
+    let rows = table.getElementsByTagName("tr");
+    let prevCell = null;
+    let prevCellTongBill = null;
+    let rowspan = 1;
+    let currentColorIndex = 0;
+    let colors = ["#d9d2e9", "#ffffff"]; // Màu nền xen kẽ
+
+    for (let i = 0; i < rows.length; i++) {
+        let currentCell = rows[i].cells[0]; // Cột "Ngày"
+        let cellTongBill = rows[i].cells[3]; // Cột "Tiền bill"
+
+        if (prevCell && prevCell.textContent === currentCell.textContent) {
+            rowspan++;
+            prevCell.rowSpan = rowspan;
+            prevCellTongBill.rowSpan = rowspan;
+            currentCell.style.display = "none"; // Ẩn ô trùng
+            cellTongBill.style.display = "none"; // Ẩn ô trùng
+        } else {
+            prevCell = currentCell;
+            prevCellTongBill = cellTongBill;
+            rowspan = 1;
+            currentColorIndex = 1 - currentColorIndex; // Đổi màu xen kẽ
+        }
+
+        // Tô màu nền cho nhóm hàng giống nhau
+        rows[i].style.backgroundColor = colors[currentColorIndex];
+    }
+}
+
+
+        function formatDate(dateString) {
+            let date = new Date(dateString);
+            return date.toLocaleDateString("vi-VN", { day: '2-digit', month: '2-digit', year: "numeric" }).replace(/-/g, "/");
+        }
+        function formatNumber(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+    </script>
+</body>
+
+</html>
