@@ -68,16 +68,20 @@
     <h1 id="loadingtext" style="text-align: center;">Đang tải bảng lương, chờ xíu!!!</h1>
 
     <div class="container-fluid mt-3" id="containerLuong" style="display: none;">
-        <h3 style="margin-top: -20px;" class="text-center">Bảng lương Trâu Quỳ</h3>
+        <h5 style="margin-top: -20px;" class="text-center">Bảng lương Trâu Quỳ</h5>
         <div class="table-responsive" style="max-height: 85vh; overflow-y: auto;">
-            <table class="table table-bordered table-sm">
+                        <label for="comboBox" class="font-weight-bold">Xem theo thợ:</label>
+            <select class="custom-select" id="comboBox" onchange="hideColumn()">
+                <option value="ALL">-- Tất cả --</option>
+            </select>
+            <table class="table table-bordered table-sm mt-2">
                 <thead class="thead-light">
                     <tr id="viewHeader">
-                        <th style="text-align: center;">
-                            Ngày</th>
-                        <th style="text-align: center;">Tên khách</th>
-                        <th style="text-align: center;">Tiền bill</th>
-                        <th style="background-color: #e9ecef; font-weight: 700; text-align: center;">Tổng bill ngày</th>
+                        <td style="text-align: center;">
+                            Ngày</td>
+                        <td style="text-align: center;">Tên khách</td>
+                        <td style="text-align: center;">Tiền bill</td>
+                        <td style="background-color: #e9ecef; font-weight: 700; text-align: center;">Tổng bill ngày</td>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -163,6 +167,11 @@
                 let listTho = new Array();
                 for (let index = 4; index < data[1].length; index++) {
                     listTho.push(data[1][index]);
+                    let select = document.getElementById("comboBox");
+                    let option = document.createElement("option");
+                    option.text = data[1][index];
+                    option.value = index;
+                    select.appendChild(option);
                     document.getElementById('viewHeader').innerHTML += '<td style="background-color: ' + lightColors[index - 4] + '; font-weight: 700; text-align: center;position: sticky;top: 0;z-index: 10;">' + data[1][index] + '</td>'
                 }
 
@@ -286,6 +295,22 @@ function mergeTableCells() {
         }
         function formatNumber(number) {
             return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+                        function hideColumn() {
+            let value = document.getElementById("comboBox").value;
+            let tr = document.getElementsByTagName('tr');
+            for (let i = 0; i < tr.length; i++) {
+                let td = tr[i].getElementsByTagName('td');
+                for (let a = 4; a < td.length; a++) {
+                    if (a != value && value != 'ALL') {
+                        td[a].style.display = 'none'
+                    } else {
+                        td[a].style.display = ''
+                    }
+                }
+                
+            }
         }
 
     </script>
